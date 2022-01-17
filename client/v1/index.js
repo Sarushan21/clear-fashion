@@ -64,10 +64,15 @@ for (var i=0; i<marketplace.length; i++){
   }
 }
 console.log(listBrand);
+
+
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
+console.log("🎯 TODO 4: Sort by price");
+var marketplacePrice = marketplace.sort((a,b) => (a.price>b.price)? 1 :-1);
+console.log(marketplacePrice);
 
 
 // 🎯 TODO: Sort by date
