@@ -146,11 +146,19 @@ for(var brandKey in listBrand){
   brands[brandKey]=brandValue;
 }
 console.log(brands);
+
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
-
-
+console.log("🎯 TODO 9: Sort by price for each brand");
+for (var brandKey in brands){
+  brands[brandKey].sort((a,b) => {
+    if (a.price > b.price) return -1;
+    if (a.price < b.price) return 1;
+    else return 0;
+  });
+}
+console.log(brands);
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
