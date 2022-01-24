@@ -311,6 +311,7 @@ for (var i=0; i<COTELE_PARIS.length; i++){
 }
 
 // 🎯 TODO: Save the favorite product
+console.log("🎯 TODO 16: Save the favorite product");
 let blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
   'price': 110,
@@ -324,7 +325,10 @@ let jacket = blueJacket;
 jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
+console.log(blueJacket);
+console.log(jacket);
 // 2. What do you notice?
+// ---------------Both of them have the property 'favorite' to true---------------
 
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
@@ -333,9 +337,11 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
-
-
-
+console.log("Let update 'jacket' property with `favorite` to true WITHOUT changing blueJacket properties")
+const new_jacket = Object.assign({}, blueJacket);
+new_jacket.favorite = true;
+console.log(blueJacket);
+console.log(new_jacket);
 
 
 /**
