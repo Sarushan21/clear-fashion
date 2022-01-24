@@ -134,8 +134,18 @@ console.log(`${averagePriceBasket} € on average`);
 //
 // 2. Log the variable
 // 3. Log the number of products by brands
-
-
+console.log("🎯 TODO 8: Products by brands");
+var brands = {};
+for(var brandKey in listBrand){
+  var brandValue = [];
+  for (var i=0; i<marketplace.length; i++){
+    if (marketplaceDate[i].brand==listBrand[brandKey]){
+      brandValue.push(marketplace[i]);
+    }
+  }
+  brands[brandKey]=brandValue;
+}
+console.log(brands);
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
