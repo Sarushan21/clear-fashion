@@ -321,7 +321,6 @@ let blueJacket = {
 // we make a copy of blueJacket to jacket
 // and set a new property `favorite` to true
 let jacket = blueJacket;
-
 jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
@@ -353,3 +352,6 @@ console.log(new_jacket);
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
 // 2. log the localStorage
+console.log("🎯 TODO 17: Save in localStorage");
+localStorage.setItem('My_Favorite_Brand', `${new_jacket.uuid}`);
+console.log(localStorage);
