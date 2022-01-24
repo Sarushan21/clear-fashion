@@ -266,7 +266,11 @@ const COTELE_PARIS = [
 // 🎯 TODO: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
-
+console.log("🎯 TODO 12: New released products");
+for (var i=0; i<COTELE_PARIS.length; i++){
+  console.log(new Date(COTELE_PARIS[i].released));
+  console.log(new Date(COTELE_PARIS[i].released) > Date.now() - (1000 * 60 * 60 * 24 * 14));
+}
 
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
