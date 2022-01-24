@@ -354,4 +354,4 @@ console.log(new_jacket);
 // 2. log the localStorage
 console.log("🎯 TODO 17: Save in localStorage");
 localStorage.setItem('My_Favorite_Brand', `${new_jacket.uuid}`);
-console.log(localStorage);
+console.log(localStorage);cd 

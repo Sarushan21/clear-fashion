@@ -5,7 +5,7 @@
 let currentProducts = [];
 let currentPagination = {};
 
-// inititiqte selectors
+// initiate selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
@@ -38,8 +38,8 @@ const fetchProducts = async (page = 1, size = 12) => {
       console.error(body);
       return {currentProducts, currentPagination};
     }
-
     return body.data;
+
   } catch (error) {
     console.error(error);
     return {currentProducts, currentPagination};
@@ -110,14 +110,26 @@ const render = (products, pagination) => {
  * Select the number of products to display
  * @type {[type]}
  */
+
+console.log("Feature 0");
 selectShow.addEventListener('change', event => {
+  console.log(event.target.value);
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
 
-document.addEventListener('DOMContentLoaded', () =>
-  fetchProducts()
+console.log("Feature 1");
+selectPage.addEventListener('change', event => {
+  console.log(event.target.value);
+  fetchProducts(parseInt(event.target.value), currentPagination.pageCount)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination))
-);
+});
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+const products = await fetchProducts();   
+setCurrentProducts(products);
+render(currentProducts, currentPagination);
+});
