@@ -302,6 +302,13 @@ if (!test){
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the new list of product
+console.log("🎯 TODO 15: Delete a specific product");
+for (var i=0; i<COTELE_PARIS.length; i++){
+  if (COTELE_PARIS[i].uuid === "b56c6d88-749a-5b4c-b571-e5b5c6483131" ){
+    COTELE_PARIS.splice(i,1);
+    console.log("The product has been deleted!");
+  }
+}
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
