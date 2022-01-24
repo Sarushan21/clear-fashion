@@ -275,8 +275,8 @@ for (var i=0; i<COTELE_PARIS.length; i++){
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
-var test=true;
 console.log("🎯 TODO 13: Reasonable price");
+var test=true;
 for (var i=0; i<COTELE_PARIS.length; i++){
   if (COTELE_PARIS[i].price>100){
     test=false;
@@ -287,6 +287,17 @@ console.log(`Reasonable Price: ${test}`);
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
+console.log("🎯 TODO 14: Find a specific product");
+var test = false;
+for (var i=0; i<COTELE_PARIS.length; i++){
+  if (COTELE_PARIS[i].uuid == "b56c6d88-749a-5b4c-b571-e5b5c6483131" ){
+    var test = true;
+    console.log(COTELE_PARIS[i]);
+  }
+}
+if (!test){
+  console.log("The product doesn't exist :(");
+}
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
