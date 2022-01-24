@@ -162,7 +162,15 @@ console.log(brands);
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
-
+console.log("🎯 TODO 10: Sort by date for each brand");
+for (var brandKey in brands){
+  brands[brandKey].sort((a,b) => {
+    if (new Date(a.date) > new Date(b.date)) return -1;
+    if (new Date(a.date) < new Date(b.date)) return 1;
+    else return 0;
+  });
+}
+console.log(brands);
 
 
 
