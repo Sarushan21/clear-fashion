@@ -98,6 +98,15 @@ console.log(filterPrice);
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
 // 2. Log the average
+console.log("🎯 TODO 7: Average Basket");
+var basket = marketplace.filter(a => a.name.toLowerCase().includes('basket') || a.name.toLowerCase().includes("sneakers"));
+var averagePriceBasket = 0;
+for (var i=0; i<basket.length; i++){
+  averagePriceBasket += basket[i].price;
+}
+averagePriceBasket = averagePriceBasket/basket.length;
+console.log(`${averagePriceBasket} € on average`);
+
 
 
 
