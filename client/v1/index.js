@@ -31,7 +31,7 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
 // 2. Log the variable
-console.log("🎯 TODO: The cheapest t-shirt");
+console.log("🎯 TODO 1: The cheapest t-shirt");
 const urlCheapest= "https://adresse.paris/t-shirts-et-polos/4238-t-shirt-ranelagh-1300000262026.html";
 console.log(urlCheapest);
 
@@ -48,7 +48,7 @@ console.log(urlCheapest);
 // 1. Create a variable and assign it the number of products
 // 2. Log the variable
 console.log("🎯 TODO 2: Number of products");
-var numberProduct=marketplace.length;
+var numberProduct = marketplace.length;
 console.log(numberProduct);
 
 // 🎯 TODO: Brands name
@@ -74,12 +74,17 @@ console.log("🎯 TODO 4: Sort by price");
 var marketplacePrice = marketplace.sort((a,b) => (a.price>b.price)? 1 :-1);
 console.log(marketplacePrice);
 
-
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
-
+console.log("🎯 TODO 5: Sort by date");
+var marketplaceDate = marketplace.sort((a, b) => {
+  if (new Date(b.date) > new Date(a.date)) return -1;
+  if (new Date(b.date) < new Date(a.date)) return 1;
+  else return 0;
+});
+console.log(marketplaceDate);
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
