@@ -167,7 +167,7 @@ selectBrand.addEventListener('change', async event => {
 
 console.log("Feature 3: Filter by recent products");
 selectSort.addEventListener('change', async event => {
-  if (event.target.value === "Recently released"){ 
+  if (event.target.value === "date-asc"){ 
     const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
     const filterRecentProducts = products.result.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14) });
     const recentProducts = JSON.parse(JSON.stringify(products));
@@ -181,6 +181,21 @@ selectSort.addEventListener('change', async event => {
   }
 });
 
+console.log("Feature 4: Filter by reasonable price");
+selectSort.addEventListener('change', async event => {
+  if (event.target.value === "price-asc"){ 
+    const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+    const filterCheaperProducts = products.result.filter(product => { return product.price < 50 });
+    const cheaperProducts = JSON.parse(JSON.stringify(products));
+    for (var elem in filterCheaperProducts)
+    {
+      console.log("Cheaper Product: ", filterCheaperProducts[elem].price);
+    }
+    cheaperProducts.result = filterCheaperProducts;
+    setCurrentProducts(cheaperProducts);
+    render(cheaperProducts.result, currentPagination);
+  }
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
 const products = await fetchProducts();   
