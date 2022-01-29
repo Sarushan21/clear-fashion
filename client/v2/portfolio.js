@@ -12,7 +12,8 @@ const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
 const selectSort = document.querySelector('#sort-select');
-
+const selectRecent = document.querySelector('#recent-select');
+const selectReasonable = document.querySelector('#reasonable-select');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -166,10 +167,11 @@ selectBrand.addEventListener('change', async event => {
 });
 
 console.log("Feature 3: Filter by recent products");
-selectSort.addEventListener('change', async event => {
-  if (event.target.value === "date-asc"){ 
+selectRecent.addEventListener('change', async event => {
+  const dictWeek = {"lessOneWeek": 7, "lessTwoWeeks": 14, "lessThreeWeeks":21};
+  if (event.target.value in dictWeek){ 
     const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
-    const filterRecentProducts = products.result.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14) });
+    const filterRecentProducts = products.result.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * dictWeek[event.target.value]) });
     const recentProducts = JSON.parse(JSON.stringify(products));
     for (var elem in filterRecentProducts)
     {
@@ -182,10 +184,11 @@ selectSort.addEventListener('change', async event => {
 });
 
 console.log("Feature 4: Filter by reasonable price");
-selectSort.addEventListener('change', async event => {
-  if (event.target.value === "price-asc"){ 
+selectReasonable.addEventListener('change', async event => {
+  const dictPrice = {"less50EUROS": 50, "less100EUROS": 100, "less500EUROS":500}
+  if (event.target.value in dictPrice){ 
     const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
-    const filterCheaperProducts = products.result.filter(product => { return product.price < 50 });
+    const filterCheaperProducts = products.result.filter(product => { return product.price < dictPrice[event.target.value] });
     const cheaperProducts = JSON.parse(JSON.stringify(products));
     for (var elem in filterCheaperProducts)
     {

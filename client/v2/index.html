@@ -20,8 +20,22 @@
         <select name="page" id="page-select"> </select>
       </div>
       <div id="filters">
-        <span>By reasonable price</span>
-        <span>By recently released</span>
+        <div id="recent">
+          <label for="recent-select">By recent released:</label>
+          <select name="recent" id="recent-select"> 
+            <option value="lessOneWeek">Less than One Week</option>
+            <option value="lessTwoWeeks">less than Two Weeks</option>
+            <option value="lessThreeWeeks">less than Three Weeks</option>
+          </select>
+        </div>
+        <div id="reasonable">
+          <label for="reasonble-select">By reasonable price:</label>
+          <select name="reasonable" id="reasonable-select">
+            <option value="less50EUROS">Less than 50€</option>
+            <option value="less100EUROS">less than 100€</option>
+            <option value="less500EUROS">less than 500€</option>
+          </select>
+        </div>
         <div id="brand">
           <label for="brand-select">By brands:</label>
           <select name="brand" id="brand-select"> </select>
