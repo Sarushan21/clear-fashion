@@ -11,6 +11,7 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
+const selectSort = document.querySelector('#sort-select');
 
 /**
  * Set global value
@@ -149,11 +150,11 @@ console.log("Feature 2: Filter by brands");
 selectBrand.addEventListener('change', async event => {
   if (event.target.value !== "Default"){ 
     const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
-  
-    const filterProducts = products.result.filter(product => { return product.brand.includes(event.target.value)});
-  
+    //Filter by brands
+    const filterProductsBrands = products.result.filter(product => { return product.brand.includes(event.target.value)});
+    //Copy of products objet in order to add modifications
     const newProducts = JSON.parse(JSON.stringify(products));
-    newProducts.result = filterProducts;
+    newProducts.result = filterProductsBrands;
     setCurrentProducts(newProducts);
     render(newProducts.result, currentPagination);
   }
@@ -163,6 +164,23 @@ selectBrand.addEventListener('change', async event => {
     render(currentProducts, currentPagination);
   }
 });
+
+console.log("Feature 3: Filter by recent products");
+selectSort.addEventListener('change', async event => {
+  if (event.target.value === "Recently released"){ 
+    const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+    const filterRecentProducts = products.result.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14) });
+    const recentProducts = JSON.parse(JSON.stringify(products));
+    for (var elem in filterRecentProducts)
+    {
+      console.log("Recent Product: ", filterRecentProducts[elem].released);
+    }
+    recentProducts.result = filterRecentProducts;
+    setCurrentProducts(recentProducts);
+    render(recentProducts.result, currentPagination);
+  }
+});
+
 
 document.addEventListener('DOMContentLoaded', async () => {
 const products = await fetchProducts();   
