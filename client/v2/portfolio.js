@@ -77,7 +77,7 @@ const renderProducts = products => {
  * @param  {Object} pagination
  */
 const renderPagination = pagination => {
-  const {currentPage, pageCount} = pagination;
+  const {count, currentPage, pageCount, pageSize} = pagination;
   const options = Array.from(
     {'length': pageCount},
     (value, index) => `<option value="${index + 1}">${index + 1}</option>`)
@@ -91,8 +91,7 @@ const renderPagination = pagination => {
 * @param  {Array} products
 */
 const renderBrand = products => {
-  console.log(products);
-  const brands=[];
+  const brands=["Select brand name: ", "Default"];
   for (var i=0; i<products.length; i++){
     const {brand, link, name, photo, price, released, uuid} = products[i];
     if (!brands.includes(brand)){
@@ -104,7 +103,6 @@ const renderBrand = products => {
     {'length': brands.length},
     (value, index) => `<option value="${brands[index]}">${brands[index]}</option>`)
     .join('');
-
   selectBrand.innerHTML = options;
 };
 
@@ -114,15 +112,14 @@ const renderBrand = products => {
  */
 const renderIndicators = pagination => {
   const {count} = pagination;
-
   spanNbProducts.innerHTML = count;
 };
 
 const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
-  renderBrand(products);
   renderIndicators(pagination);
+  renderBrand(products);
 };
 
 /**
@@ -134,33 +131,37 @@ const render = (products, pagination) => {
  * @type {[type]}
  */
 
-console.log("Feature 0");
+console.log("Feature 0: Show more");
 selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
 
-console.log("Feature 1");
+console.log("Feature 1: Browse pages");
 selectPage.addEventListener('change', async event => {
-  const products = await fetchProducts(parseInt(event.target.value), currentPagination.pageCount);
-  console.log(products);
-  console.log(currentPagination);
+  const products = await fetchProducts(event.target.value, currentPagination.pageSize);
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 });
 
-console.log("Feature 2");
+console.log("Feature 2: Filter by brands");
 selectBrand.addEventListener('change', async event => {
-  const products = await fetchProducts(parseInt(event.target.value), currentPagination.pageCount);
-  for (var i=0; i<products.result.length; i++){
-    if (products.result[i].brand !== event.target.value)
-    {
-      products.result.splice(i,1)
-    }
+  if (event.target.value !== "Default"){ 
+    const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  
+    const filterProducts = products.result.filter(product => { return product.brand.includes(event.target.value)});
+  
+    const newProducts = JSON.parse(JSON.stringify(products));
+    newProducts.result = filterProducts;
+    setCurrentProducts(newProducts);
+    render(newProducts.result, currentPagination);
   }
-  setCurrentProducts(products);
-  render(currentProducts, currentPagination);
+  else {
+    const products = await fetchProducts();   
+    setCurrentProducts(products);
+    render(currentProducts, currentPagination);
+  }
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
