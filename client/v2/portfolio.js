@@ -208,13 +208,42 @@ selectSort.addEventListener('change', async event => {
       var sortProductsPrice = products.result.sort((a,b) => (a.price>b.price)? 1 :-1);}
     else{
       var sortProductsPrice = products.result.sort((a,b) => (a.price<b.price)? 1 :-1);}
-    console.log(sortProductsPrice);
     const sortedProducts = JSON.parse(JSON.stringify(products));
     for (var elem in sortProductsPrice)
     {
-      console.log("Recent Product: ", sortProductsPrice[elem].price);
+      console.log("Product Price: ", sortProductsPrice[elem].price);
     }
     sortedProducts.result = sortProductsPrice;
+    console.log(sortedProducts);
+    setCurrentProducts(sortedProducts);
+    render(sortedProducts.result, currentPagination);
+  }
+});
+
+console.log("Feature 6: Sort by date");
+selectSort.addEventListener('change', async event => {
+  if (event.target.value === "date-asc" || event.target.value === "date-desc"){ 
+    const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+    if (event.target.value === "date-asc"){
+      var sortProductsDate = products.result.sort((a,b) => {
+        if (new Date(b.released) > new Date(a.released)) return -1;
+        if (new Date(b.released) < new Date(a.released)) return 1;
+        else return 0;
+      });
+    }
+    else{
+      var sortProductsDate = products.result.sort((a,b) => {
+        if (new Date(b.released) < new Date(a.released)) return -1;
+        if (new Date(b.released) > new Date(a.released)) return 1;
+        else return 0;
+      });
+    }
+    const sortedProducts = JSON.parse(JSON.stringify(products));
+    for (var elem in sortProductsDate)
+    {
+      console.log("Released Date: ", sortProductsDate[elem].released);
+    }
+    sortedProducts.result = sortProductsDate;
     console.log(sortedProducts);
     setCurrentProducts(sortedProducts);
     render(sortedProducts.result, currentPagination);
