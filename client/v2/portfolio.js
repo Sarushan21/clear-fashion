@@ -200,6 +200,27 @@ selectReasonable.addEventListener('change', async event => {
   }
 });
 
+console.log("Feature 5: Sort by price");
+selectSort.addEventListener('change', async event => {
+  if (event.target.value === "price-asc" || event.target.value === "price-desc"){ 
+    const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+    if (event.target.value === "price-asc"){
+      var sortProductsPrice = products.result.sort((a,b) => (a.price>b.price)? 1 :-1);}
+    else{
+      var sortProductsPrice = products.result.sort((a,b) => (a.price<b.price)? 1 :-1);}
+    console.log(sortProductsPrice);
+    const sortedProducts = JSON.parse(JSON.stringify(products));
+    for (var elem in sortProductsPrice)
+    {
+      console.log("Recent Product: ", sortProductsPrice[elem].price);
+    }
+    sortedProducts.result = sortProductsPrice;
+    console.log(sortedProducts);
+    setCurrentProducts(sortedProducts);
+    render(sortedProducts.result, currentPagination);
+  }
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
 const products = await fetchProducts();   
 setCurrentProducts(products);
