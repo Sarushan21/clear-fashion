@@ -306,7 +306,17 @@ console.log("Feature 9: p50, p90 and p95 price value indicator");
 //   spanP95.innerHTML = sortedProducts[p95].price;
 // };
 
-console.log("Feature 10: Open product link");
+console.log("Feature 10: Last released date indicator");
+// const renderIndicatorsLastReleased = products => {
+//   const lastReleasedDate = products.sort((a,b) => {
+//     if (new Date(a.date) > new Date(b.date)) return -1;
+//     if (new Date(a.date) < new Date(b.date)) return 1;
+//     else return 0;
+//   });
+//   spanLastReleased.innerHTML = lastReleasedDate[0].released;
+// };
+
+console.log("Feature 11: Open product link");
 
 document.addEventListener('DOMContentLoaded', async () => {
 const products = await fetchProducts();   
