@@ -21,6 +21,8 @@ const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95');
 const spanLastReleased = document.querySelector('#lastReleased');
 
+const favorite = [];
+
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -70,6 +72,13 @@ const renderProducts = products => {
         <span>${product.brand}</span>
         <a target="_blank" href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
+        <button onclick="addFavorite();"">Add Favorite</button>
+        <script>
+          function addFavorite() {
+          favorite.push(${product});
+          console.log(favorite);
+          }
+        </script>
       </div>`;
     })
     .join('');
@@ -317,6 +326,7 @@ console.log("Feature 10: Last released date indicator");
 // };
 
 console.log("Feature 11: Open product link");
+console.log("Feature 12: Save as favourite");
 
 document.addEventListener('DOMContentLoaded', async () => {
 const products = await fetchProducts();   
