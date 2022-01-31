@@ -16,6 +16,9 @@ const selectRecent = document.querySelector('#recent-select');
 const selectReasonable = document.querySelector('#reasonable-select');
 const spanNbProducts = document.querySelector('#nbProducts');
 const spanNbRecentProducts = document.querySelector('#nbRecentProducts');
+const spanP50 = document.querySelector('#p50');
+const spanP90 = document.querySelector('#p90');
+const spanP95 = document.querySelector('#p95');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -123,12 +126,24 @@ const renderIndicators = pagination => {
  * Render list of products
  * @param  {Array} products
  */
- const renderIndicatorsRecentProducts = products => {
+const renderIndicatorsRecentProducts = products => {
   const nbRecentProducts = products.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14 )}).length;
   spanNbRecentProducts.innerHTML = nbRecentProducts;
 };
 
-
+/**
+ * Render list of products
+ * @param  {Array} products
+ */
+const renderPriceValueIndicator = products => {
+  const sortedProducts = products.sort((a,b) => (a.price>b.price)? 1 :-1)
+  var p50 = Math.floor(sortedProducts.length*0.5);
+  var p90 = Math.floor(sortedProducts.length*0.9);
+  var p95 = Math.floor(sortedProducts.length*0.95);
+  spanP50.innerHTML = sortedProducts[p50].price;
+  spanP90.innerHTML = sortedProducts[p90].price;
+  spanP95.innerHTML = sortedProducts[p95].price;
+};
 
 
 
@@ -137,6 +152,7 @@ const render = (products, pagination) => {
   renderPagination(pagination);
   renderIndicators(pagination);
   renderIndicatorsRecentProducts(products);
+  renderPriceValueIndicator(products);
   renderBrand(products);
 };
 
@@ -280,6 +296,17 @@ console.log("Feature 8: Number of recent products indicator");
 // const renderIndicatorsRecentProducts = products => {
 //   const nbRecentProducts = products.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14 )}).length;
 //   spanNbRecentProducts.innerHTML = nbRecentProducts;
+// };
+
+console.log("Feature 9: p50, p90 and p95 price value indicator");
+// const renderPriceValueIndicator = products => {
+//   const sortedProducts = products.sort((a,b) => (a.price>b.price)? 1 :-1)
+//   var p50 = Math.floor(sortedProducts.length*0.5);
+//   var p90 = Math.floor(sortedProducts.length*0.9);
+//   var p95 = Math.floor(sortedProducts.length*0.95);
+//   spanP50.innerHTML = sortedProducts[p50].price;
+//   spanP90.innerHTML = sortedProducts[p90].price;
+//   spanP95.innerHTML = sortedProducts[p95].price;
 // };
 
 document.addEventListener('DOMContentLoaded', async () => {
