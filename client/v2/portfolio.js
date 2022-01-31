@@ -68,13 +68,11 @@ const renderProducts = products => {
       return `
       <div class="product" id=${product.uuid}>
         <span>${product.brand}</span>
-        <a href="${product.link}">${product.name}</a>
+        <a target="_blank" href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
-      </div>
-    `;
+      </div>`;
     })
     .join('');
-
   div.innerHTML = template;
   fragment.appendChild(div);
   sectionProducts.innerHTML = '<h2>Products</h2>';
@@ -307,6 +305,8 @@ console.log("Feature 9: p50, p90 and p95 price value indicator");
 //   spanP90.innerHTML = sortedProducts[p90].price;
 //   spanP95.innerHTML = sortedProducts[p95].price;
 // };
+
+console.log("Feature 10: Open product link");
 
 document.addEventListener('DOMContentLoaded', async () => {
 const products = await fetchProducts();   
