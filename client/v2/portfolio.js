@@ -19,6 +19,8 @@ const spanNbRecentProducts = document.querySelector('#nbRecentProducts');
 const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95');
+const spanLastReleased = document.querySelector('#lastReleased');
+
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -113,29 +115,18 @@ const renderBrand = products => {
   selectBrand.innerHTML = options;
 };
 
-/**
- * Render page selector
- * @param  {Object} pagination
- */
+
 const renderIndicators = pagination => {
   const {count} = pagination;
   spanNbProducts.innerHTML = count;
 };
 
-/**
- * Render list of products
- * @param  {Array} products
- */
 const renderIndicatorsRecentProducts = products => {
   const nbRecentProducts = products.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14 )}).length;
   spanNbRecentProducts.innerHTML = nbRecentProducts;
 };
 
-/**
- * Render list of products
- * @param  {Array} products
- */
-const renderPriceValueIndicator = products => {
+const renderIndicatorsPriceValue = products => {
   const sortedProducts = products.sort((a,b) => (a.price>b.price)? 1 :-1)
   var p50 = Math.floor(sortedProducts.length*0.5);
   var p90 = Math.floor(sortedProducts.length*0.9);
@@ -145,14 +136,22 @@ const renderPriceValueIndicator = products => {
   spanP95.innerHTML = sortedProducts[p95].price;
 };
 
-
+const renderIndicatorsLastReleased = products => {
+  const lastReleasedDate = products.sort((a,b) => {
+    if (new Date(a.date) > new Date(b.date)) return -1;
+    if (new Date(a.date) < new Date(b.date)) return 1;
+    else return 0;
+  });
+  spanLastReleased.innerHTML = lastReleasedDate[0].released;
+};
 
 const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
   renderIndicatorsRecentProducts(products);
-  renderPriceValueIndicator(products);
+  renderIndicatorsPriceValue(products);
+  renderIndicatorsLastReleased(products);  
   renderBrand(products);
 };
 
