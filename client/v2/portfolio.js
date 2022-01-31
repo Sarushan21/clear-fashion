@@ -6,14 +6,16 @@ let currentProducts = [];
 let currentPagination = {};
 
 // initiate selectors
+
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
-const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
 const selectSort = document.querySelector('#sort-select');
 const selectRecent = document.querySelector('#recent-select');
 const selectReasonable = document.querySelector('#reasonable-select');
+const spanNbProducts = document.querySelector('#nbProducts');
+const spanNbRecentProducts = document.querySelector('#nbRecentProducts');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -89,7 +91,7 @@ const renderPagination = pagination => {
 };
 
 /**
-* Render page selector
+* Render list of products
 * @param  {Array} products
 */
 const renderBrand = products => {
@@ -117,12 +119,30 @@ const renderIndicators = pagination => {
   spanNbProducts.innerHTML = count;
 };
 
+/**
+ * Render list of products
+ * @param  {Array} products
+ */
+ const renderIndicatorsRecentProducts = products => {
+  const nbRecentProducts = products.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14 )}).length;
+  spanNbRecentProducts.innerHTML = nbRecentProducts;
+};
+
+
+
+
+
 const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
+  renderIndicatorsRecentProducts(products);
   renderBrand(products);
 };
+
+
+
+
 
 /**
  * Declaration of all Listeners
@@ -185,7 +205,7 @@ selectRecent.addEventListener('change', async event => {
 
 console.log("Feature 4: Filter by reasonable price");
 selectReasonable.addEventListener('change', async event => {
-  const dictPrice = {"less50EUROS": 50, "less100EUROS": 100, "less500EUROS":500}
+  const dictPrice = {"less25EUROS": 25, "less50EUROS": 50, "less80EUROS":80}
   if (event.target.value in dictPrice){ 
     const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
     const filterCheaperProducts = products.result.filter(product => { return product.price < dictPrice[event.target.value] });
@@ -249,6 +269,18 @@ selectSort.addEventListener('change', async event => {
     render(sortedProducts.result, currentPagination);
   }
 });
+
+console.log("Feature 7: Number of products indicator");
+// const renderIndicators = pagination => {
+//   const {count} = pagination;
+//   spanNbProducts.innerHTML = count;
+// };
+
+console.log("Feature 8: Number of recent products indicator");
+// const renderIndicatorsRecentProducts = products => {
+//   const nbRecentProducts = products.filter(product => { return new Date(product.released) > Date.now() - (1000 * 60 * 60 * 24 * 14 )}).length;
+//   spanNbRecentProducts.innerHTML = nbRecentProducts;
+// };
 
 document.addEventListener('DOMContentLoaded', async () => {
 const products = await fetchProducts();   
