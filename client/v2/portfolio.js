@@ -73,12 +73,6 @@ const renderProducts = products => {
         <a target="_blank" href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
         <button onclick="addFavorite();"">Add Favorite</button>
-        <script>
-          function addFavorite() {
-          favorite.push(${product});
-          console.log(favorite);
-          }
-        </script>
       </div>`;
     })
     .join('');

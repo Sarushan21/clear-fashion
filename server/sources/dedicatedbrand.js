@@ -8,7 +8,7 @@ const cheerio = require('cheerio');
  */
 const parse = data => {
   const $ = cheerio.load(data);
-
+  console.log($);
   return $('.productList-container .productList')
     .map((i, element) => {
       const name = $(element)
@@ -20,11 +20,40 @@ const parse = data => {
         $(element)
           .find('.productList-price')
           .text()
+      
       );
 
       return {name, price};
     })
     .get();
+};
+
+/**
+ * Parse webpage e-shop
+ * @param  {String} data - html response
+ * @return {Array} products
+ */
+const parseDedicated = data => {
+  var fullProducts = []
+
+  data.products.forEach(product => {        
+    if(product.id != undefined){
+      fullProducts.push({
+        "id": product.id,
+        "name": product.name,
+        "brand": "dedicated",
+        "price": product.price.priceAsNumber,
+        "discount": product.discountPercent + "%",
+        "image": product.image[0],
+        "link": 'https://www.dedicatedbrand.com/en/' + product.canonicalUri
+      })
+      
+    }
+
+  })
+  var fullProductList = [];
+  
+  return fullProducts
 };
 
 /**
@@ -35,11 +64,12 @@ const parse = data => {
 module.exports.scrape = async url => {
   try {
     const response = await fetch(url);
-
     if (response.ok) {
-      const body = await response.text();
+      console.log("___Response Ok___");
+      const body = await response.json();
+      return parseDedicated(body);
 
-      return parse(body);
+
     }
 
     console.error(response);
