@@ -34,7 +34,7 @@ const parse = data => {
  * @return {Array} products
  */
 const parseDedicated = data => {
-  var fullProducts = []
+  var fullProducts = [];
 
   data.products.forEach(product => {        
     if(product.id != undefined){
@@ -46,14 +46,10 @@ const parseDedicated = data => {
         "discount": product.discountPercent + "%",
         "image": product.image[0],
         "link": 'https://www.dedicatedbrand.com/en/' + product.canonicalUri
-      })
-      
+      });
     }
-
-  })
-  var fullProductList = [];
-  
-  return fullProducts
+  });
+  return Object.assign({}, fullProducts);
 };
 
 /**
@@ -68,7 +64,6 @@ module.exports.scrape = async url => {
       console.log("___Response Ok___");
       const body = await response.json();
       return parseDedicated(body);
-
 
     }
 

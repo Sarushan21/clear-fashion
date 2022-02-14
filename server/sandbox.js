@@ -9,7 +9,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/loadfilter?',
       const products = await dedicatedbrand.scrape(eshop);
 
       console.log(products);
-      console.log('done');
+      console.log('End');
       process.exit(0);
     } catch (e) {
       console.error(e);
