@@ -8,7 +8,6 @@ const cheerio = require('cheerio');
  */
 const parse = data => {
   const $ = cheerio.load(data);
-  console.log($);
   return $('.productList-container .productList')
     .map((i, element) => {
       const name = $(element)
@@ -53,23 +52,59 @@ const parseDedicated = data => {
 };
 
 /**
+ * Parse webpage e-shop
+ * @param  {String} data - html response
+ * @return {Array} products
+ */
+ const getURL = data => {
+  urlList = [];
+  const $ = cheerio.load(data);
+  
+  var url =  $('.skip-content .nav-primary').find('li').find('a').each(  (index, value) => {
+    const categoryList = ["Chaussures","Pulls & Sweats","Chemises","Polos & T-shirts","Accessoires","Bas"];
+    if (categoryList.includes($(value).text())){
+      var link = $(value).attr('href');
+      urlList.push(link);
+    }
+  });
+  console.log(urlList);
+  return(urlList);   
+};
+
+
+
+/**
  * Scrape all the products for a given url page
  * @param  {[type]}  url
  * @return {Array|null}
  */
-module.exports.scrape = async url => {
+module.exports.scrape = async (url, brand)  => {
   try {
     const response = await fetch(url);
     if (response.ok) {
-      console.log("___Response Ok___");
-      const body = await response.json();
-      return parseDedicated(body);
-
+      if (brand=="dedicatedbrand"){
+        console.log("___Response Ok___");
+        const body = await response.json();
+        return parseDedicated(body);
+      }
+      if (brand=="montlimart"){
+        console.log("___Response Ok___");
+        const body = await response.text();
+        const urlList = getURL(body);
+        console.log(urlList);
+        urlList.forEach(link => {
+          console.log(link)
+          const responseLink = fetch(link);
+          if (responseLink.ok){
+            console.log("___Response Url link Ok___");
+          }
+        })
+        
+      }
     }
-
     console.error(response);
-
     return null;
+    
   } catch (error) {
     console.error(error);
     return null;
