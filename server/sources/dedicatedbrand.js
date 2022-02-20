@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
-
+const puppeteer = require('puppeteer');
 /**
  * Parse webpage e-shop
  * @param  {String} data - html response
@@ -19,7 +19,6 @@ const parse = data => {
         $(element)
           .find('.productList-price')
           .text()
-      
       );
 
       return {name, price};
@@ -77,21 +76,19 @@ const fetchAll = async (urls) => {
   return (texts);
 }
 
-const puppeteer = require('puppeteer');
 
 const dynamicScraping = async (url) => {
-  const browser = await puppeteer.launch({ headless: false });
+  console.log("aaaa")
+  console.log(url)
+  const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
-  console.log(page)
-
   await page.goto(url);
-
   const textContent = await page.evaluate(() => {
-    return document.querySelector('.npm-expansions').textContent
+    let title = document.querySelector('div[class="product-info"] > h2[class="product-name]').innerText;
+    console.log(title)
   });
   console.log(textContent); /* No Problem Mate */
-
-  browser.close();
+  await browser.close();
 };
 
 //function sleep(ms) {
@@ -113,8 +110,6 @@ const parseMontlimart = data => {
         //sleep(30000000).then(() => { console.log(`Waiting 3 seconds...`);});
         setTimeout(() => {  console.log("World!"); }, 2000);
         console.log(i)
-              
-      
         return {name, price, image};
       }
     })
@@ -142,8 +137,8 @@ module.exports.scrape = async (url, brand)  => {
         const body = await response.text();
         const urlList = getURL(body);
         
-        urlList.forEach(url => {
-          dynamicScraping(url)
+        //urlList.forEach(url => {
+        //  dynamicScraping(url)
         
         //const bodyList = await fetchAll(urlList);
         //var fullProducts = []
@@ -151,9 +146,18 @@ module.exports.scrape = async (url, brand)  => {
           //categoryProducts = parseMontlimart(body);
           //console.log(categoryProducts)
           //fullProducts = fullProducts.push.apply(fullProducts,parseMontlimart(body));
+        //})
+        link1="https://www.montlimart.com/toute-la-collection.html?p=8"
+        link2="https://www.montlimart.com/toute-la-collection.html?p=9"
+        var urlListTest=[]
+        urlListTest.push(link1)
+        urlListTest.push(link2)
+        const bodyList = await fetchAll(urlListTest);
+        var fullProducts = []
+        bodyList.forEach(body => {
+          categoryProducts = parseMontlimart(body);
+          console.log(categoryProducts)
         })
-
-        
           
         //urlList.forEach(link => {
           //console.log(link);
