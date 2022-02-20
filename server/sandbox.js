@@ -1,8 +1,8 @@
 /* eslint-disable no-console, no-process-exit */
 const dedicatedbrand = require('./sources/dedicatedbrand');
 
-async function sandbox(eshop = 'https://www.montlimart.com/', shopname="montlimart") {
-  if (shopname === "montlimart"){
+async function sandbox(eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', shopname="dedicatedbrand") {
+//  if (shopname === "montlimart"){
     try {
       console.log(`🕵️‍♀️  browsing ${eshop} source`);
       const products = await dedicatedbrand.scrape(eshop,shopname);
@@ -14,9 +14,11 @@ async function sandbox(eshop = 'https://www.montlimart.com/', shopname="montlima
       console.error(e);
       process.exit(1);
     }
-  }
+//  }
 }
 
-const [,, eshop] = process.argv;
 
-sandbox(eshop);
+
+const [,, eshop,shopname] = process.argv;
+
+sandbox(eshop,shopname);
