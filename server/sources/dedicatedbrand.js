@@ -88,7 +88,8 @@ const parseMontlimart = data => {
       if (parseFloat($(element).find('.product-info .price-box .price').text().trim())){
         const name = $(element).find('.product-info .product-name').text().trim();
         console.log(name);
-        const price = parseFloat($(element).find('.product-info .price-box .price').text().trim()).toFixed(2);
+        const price = parseFloat($(element).find('.product-info .price-box .price').text().trim().replace(/,/g,'.'));
+        console.log($(element).find('.product-info .price-box .price').text().trim())
         console.log(price);
         const image = $(element).find('.product-image').find('a').find('img').attr('src');
         console.log(i);
