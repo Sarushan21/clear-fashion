@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
+
 /**
  * Parse webpage e-shop
  * @param  {String} data - html response
@@ -26,6 +26,8 @@ const parse = data => {
     .get();
 };
 
+//////////////////////////////////////// DEDICATED SHOP SCRAPING ////////////////////////////////////////
+
 /**
  * Parse webpage e-shop
  * @param  {String} data - html response
@@ -46,27 +48,30 @@ const parseDedicated = data => {
       });
     }
   });
-  return Object.assign({}, fullProducts);
+  return Object.assign([], fullProducts);
 };
+
+//////////////////////////////////////// MONTLIMART SHOP SCRAPING ///////////////////////////////////////
 
 /**
  * Parse webpage e-shop
  * @param  {String} data - html response
  * @return {Array} products
  */
- const getURL = data => {
-  urlList = [];
+ const getURL = (data) => {
   const $ = cheerio.load(data);
-  
-  var url =  $('.skip-content .nav-primary').find('li').find('a').each( (index, value) => {
-    //const categoryList = ["Chaussures","Pulls & Sweats","Chemises","Polos & T-shirts","Accessoires","Bas"];
-    const categoryList = ["Chaussures","Pulls & Sweats"]
+
+  var urlList=[];
+  var limit = "?limit=all";
+  var urlCategory =  $('.skip-content .nav-primary').find('li').find('a').each( (index, value) => {
+    //const categoryList = ["Chaussures", "Pulls & Sweats", "Chemises", "Polos & T-shirts", "Accessoires", "Bas"];
+    const categoryList = ["Pulls & Sweats","Chemises"];
     if (categoryList.includes($(value).text())){
-      var link = $(value).attr('href');
+      var link = $(value).attr('href') + limit;
+      console.log(link);
       urlList.push(link);
     }
   });
-  console.log(urlList);
   return(urlList);   
 };
 
@@ -76,40 +81,17 @@ const fetchAll = async (urls) => {
   return (texts);
 }
 
-
-const dynamicScraping = async (url) => {
-  console.log("aaaa")
-  console.log(url)
-  const browser = await puppeteer.launch({headless: false});
-  const page = await browser.newPage();
-  await page.goto(url);
-  const textContent = await page.evaluate(() => {
-    let title = document.querySelector('div[class="product-info"] > h2[class="product-name]').innerText;
-    console.log(title)
-  });
-  console.log(textContent); /* No Problem Mate */
-  await browser.close();
-};
-
-//function sleep(ms) {
-//  console.log("sleeeeeeep")
-//  return new Promise(resolve => setTimeout(resolve, ms));
-//}
-
 const parseMontlimart = data => {
   const $ = cheerio.load(data);
   return $('.category-products .item')
     .map((i, element) => {
-      if (parseFloat($(element).find('.product-info .price-box .price').text().trim()) ){
-        const name = $(element).find('.product-info .product-name').text().trim()
-        console.log(name)
-        const price = parseFloat($(element).find('.product-info .price-box .price').text().trim()).toFixed(2)
-        console.log(price)
-        const image = $(element).find('.product-image').find('a').find('img').attr('src')
-        console.log(image)
-        //sleep(30000000).then(() => { console.log(`Waiting 3 seconds...`);});
-        setTimeout(() => {  console.log("World!"); }, 2000);
-        console.log(i)
+      if (parseFloat($(element).find('.product-info .price-box .price').text().trim())){
+        const name = $(element).find('.product-info .product-name').text().trim();
+        console.log(name);
+        const price = parseFloat($(element).find('.product-info .price-box .price').text().trim()).toFixed(2);
+        console.log(price);
+        const image = $(element).find('.product-image').find('a').find('img').attr('src');
+        console.log(i);
         return {name, price, image};
       }
     })
@@ -130,48 +112,31 @@ module.exports.scrape = async (url, brand)  => {
       if (brand=="dedicatedbrand"){
         console.log("___Response Ok___");
         const body = await response.json();
-        return parseDedicated(body);
+        var fullProducts =  parseDedicated(body);
+        console.log(fullProducts);
+        //var myJsonString = JSON.parse(JSON.stringify(fullProducts));
+        //console.log(myJsonString);
       }
       if (brand=="montlimart"){
         console.log("___Response Ok___");
         const body = await response.text();
+
         const urlList = getURL(body);
-        
-        //urlList.forEach(url => {
-        //  dynamicScraping(url)
-        
-        //const bodyList = await fetchAll(urlList);
-        //var fullProducts = []
-        //bodyList.forEach(body => {
-          //categoryProducts = parseMontlimart(body);
-          //console.log(categoryProducts)
-          //fullProducts = fullProducts.push.apply(fullProducts,parseMontlimart(body));
-        //})
-        link1="https://www.montlimart.com/toute-la-collection.html?p=8"
-        link2="https://www.montlimart.com/toute-la-collection.html?p=9"
-        var urlListTest=[]
-        urlListTest.push(link1)
-        urlListTest.push(link2)
-        const bodyList = await fetchAll(urlListTest);
-        var fullProducts = []
+        const bodyList = await fetchAll(urlList);
+
+        var fullProducts = [];
         bodyList.forEach(body => {
-          categoryProducts = parseMontlimart(body);
-          console.log(categoryProducts)
+          const categoryProducts = parseMontlimart(body);
+          fullProducts = fullProducts.concat(categoryProducts);
+          console.log(fullProducts);
+          console.log(fullProducts.length);
         })
-          
-        //urlList.forEach(link => {
-          //console.log(link);
-          //const responseLink = fetch(link);
-          //const bodyLink = responseLink.text(); 
-          //console.log(bodyLink);
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        //})
-        
+        //var myJsonString = JSON.stringify(fullProducts);
+        //console.log(myJsonString);
+        console.log("___________________________________________________________")
       }
     }
-    //console.error(response);
     return null;
-    
   } catch (error) {
     console.error(error);
     return null;

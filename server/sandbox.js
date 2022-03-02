@@ -4,7 +4,7 @@ const dedicatedbrand = require('./sources/dedicatedbrand');
 async function sandbox(eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', shopname="dedicatedbrand") {
 //  if (shopname === "montlimart"){
     try {
-      console.log(`🕵️‍♀️  browsing ${eshop} source`);
+      console.log(`\n🕵️‍♀️  browsing ${eshop} source\n`);
       const products = await dedicatedbrand.scrape(eshop,shopname);
 
       console.log(products);
