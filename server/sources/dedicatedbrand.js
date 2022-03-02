@@ -116,6 +116,8 @@ module.exports.scrape = async (url, brand)  => {
         console.log(fullProducts);
         //var myJsonString = JSON.parse(JSON.stringify(fullProducts));
         //console.log(myJsonString);
+        console.log("__________________________________________________________________________________")
+
       }
       if (brand=="montlimart"){
         console.log("___Response Ok___");
@@ -133,7 +135,7 @@ module.exports.scrape = async (url, brand)  => {
         })
         //var myJsonString = JSON.stringify(fullProducts);
         //console.log(myJsonString);
-        console.log("___________________________________________________________")
+        console.log("__________________________________________________________________________________")
       }
     }
     return null;
