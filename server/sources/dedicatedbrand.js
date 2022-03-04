@@ -58,7 +58,7 @@ const parseDedicated = data => {
  * @param  {String} data - html response
  * @return {Array} products
  */
- const getURL = (data) => {
+ const getURLMontlimart = (data) => {
   const $ = cheerio.load(data);
 
   var urlList=[];
@@ -99,7 +99,24 @@ const parseMontlimart = data => {
     .get();
 };
 
+///////////////////////////////////// ADRESSE PARIS SHOP SCRAPING ///////////////////////////////////////
+/**
+ * Parse webpage e-shop
+ * @param  {String} data - html response
+ * @return {Array} products
+ */
+ const getURL = (data) => {
+  var $ = cheerio.load(data);
+  var urlCollection = $('.container ').find('nav').find('ul').find('li').find('a').attr('href')
+  console.log(urlCollection)
+  return(urlCollection);   
+ }
 
+const fetchAll1 = async (urls) => {
+  const res = await Promise.all(urls.map(u => fetch(u)));
+  const texts = await Promise.all(res.map(r => r.text()));
+  return (texts);
+}
 
 /**
  * Scrape all the products for a given url page
@@ -124,7 +141,7 @@ module.exports.scrape = async (url, brand)  => {
         console.log("___Response Ok___");
         const body = await response.text();
 
-        const urlList = getURL(body);
+        const urlList = getURLMontlimart(body);
         const bodyList = await fetchAll(urlList);
 
         var fullProducts = [];
@@ -138,6 +155,18 @@ module.exports.scrape = async (url, brand)  => {
         //console.log(myJsonString);
         console.log("__________________________________________________________________________________")
       }
+
+      if (brand=="adresseParis"){
+        console.log("___Response Ok___");
+        const body = await response.text();
+
+        const urlFullCollecion = getURL(body);
+        console.log(urlFullCollecion)
+        const bodyList = await fetchAll1([urlFullCollecion]);
+        console.log(bodyList.length)
+      }
+
+
     }
     return null;
   } catch (error) {
