@@ -203,6 +203,9 @@ module.exports.scrape = async (url, brand)  => {
         fullProducts = parseAdresseParis(bodyALL);
         console.log(fullProducts);
         console.log(fullProducts.length);
+        //var myJsonString = JSON.stringify(fullProducts);
+        //console.log(myJsonString);
+        console.log("__________________________________________________________________________________")
       }
     }
     return null;
