@@ -75,9 +75,9 @@ const parseDedicated = data => {
   return(urlList);   
 };
 
-const fetchAll = async (urls) => {
-  const res = await Promise.all(urls.map(u => fetch(u)));
-  const texts = await Promise.all(res.map(r => r.text()));
+const fetchAllMontlimart = async (urls) => {
+  const resp = await Promise.all(urls.map(u => fetch(u)));
+  const texts = await Promise.all(resp.map(r => r.text()));
   return (texts);
 }
 
@@ -105,35 +105,53 @@ const parseMontlimart = data => {
  * @param  {String} data - html response
  * @return {Array} products
  */
- const getURL = async (data) => {
+const getURLAdresseParis = async (data) => {
   var $ = cheerio.load(data);
-  var url = $('.container ').find('nav').find('ul').find('li').find('a').attr('href');
+  var path = $('.container ').find('nav').find('ul').find('li').find('a');
+  const url = path.attr('href');
   console.log(url);
-  console.log(typeof url);
   
-  return (fetch(url)
-    .then(response => {
-      console.log("aaa");
-      console.log(response);
-      return response.text()
-    })
+  return fetch(url)
+    .then(response => { return response.text() })
     .then(body => { 
-      console.log(body)
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-      $ = cheerio.load(body);
-      console.log($('.content_sortPagiBar' ).find('div').find('div').find('form').find('div').find('input').attr('type'));
-      console.log("aaaaaaaaa");
+      var $ = cheerio.load(body);
+      var name = []
+      var val = []
+      var path = $('.content_sortPagiBar').find('div').find('div').find('form').find('div').find('input').each( (index, value) => {
+        name.push($(value).attr("name"));
+        val.push($(value).attr("value"));
+      })
+      const urlALL = url+ "?" + name[0] + "=" + val[0] + "&" + name[1] + "=" + val[1] 
+      return (urlALL)
     }).catch(err => {
       console.error('Failed to fetch - ' + url);
       console.error(err);
-    }))
- }
-
-const fetchAll1 = async (urls) => {
-  const res = await Promise.all(urls.map(u => fetch(u)));
-  const texts = await Promise.all(res.map(r => r.text()));
-  return (texts);
+    })
 }
+
+const fetchAllAdresseParis = async (url) => {
+  const resp = await fetch(url);
+  const body = await resp.text();
+  return (body);
+}
+
+const parseAdresseParis = data => {
+  const $ = cheerio.load(data);
+  return $('.product_list.grid.row').find('li')
+    .map((i, element) => {
+      if (parseFloat($(element).find('.product-container .right-block .prixright .content_price .price.product-price').text().trim())){
+        
+        const name = $(element).find('.product-container .right-block .product-name-container.versionmob .product-name').text().trim();
+        console.log(name);
+        const price = parseFloat($(element).find('.product-container .right-block .prixright .content_price .price.product-price').text().trim().replace(/,/g,'.'));
+        console.log(price);
+        const image = $(element).find('.product-container .left-block .product-image-container').find('a').find('img').attr('src');
+        console.log(i);
+        return {name, price, image};
+      }
+    })
+    .get();
+};
 
 /**
  * Scrape all the products for a given url page
@@ -159,7 +177,7 @@ module.exports.scrape = async (url, brand)  => {
         const body = await response.text();
 
         const urlList = getURLMontlimart(body);
-        const bodyList = await fetchAll(urlList);
+        const bodyList = await fetchAllMontlimart(urlList);
 
         var fullProducts = [];
         bodyList.forEach(body => {
@@ -177,15 +195,15 @@ module.exports.scrape = async (url, brand)  => {
         console.log("___Response Ok___");
         const body = await response.text();
 
-        const urlCollection = await getURL(body);
-        console.log(urlCollection)
-        //const bodyCollection = await fetchAll1([urlFullCollecion]);
-        
-        
+        const urlALL= await getURLAdresseParis(body);
+        console.log(urlALL)
+        const bodyALL = await fetchAllAdresseParis(urlALL);
 
+        var fullProducts = [];
+        fullProducts = parseAdresseParis(bodyALL);
+        console.log(fullProducts);
+        console.log(fullProducts.length);
       }
-
-
     }
     return null;
   } catch (error) {
