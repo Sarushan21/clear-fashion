@@ -105,11 +105,28 @@ const parseMontlimart = data => {
  * @param  {String} data - html response
  * @return {Array} products
  */
- const getURL = (data) => {
+ const getURL = async (data) => {
   var $ = cheerio.load(data);
-  var urlCollection = $('.container ').find('nav').find('ul').find('li').find('a').attr('href')
-  console.log(urlCollection)
-  return(urlCollection);   
+  var url = $('.container ').find('nav').find('ul').find('li').find('a').attr('href');
+  console.log(url);
+  console.log(typeof url);
+  
+  return (fetch(url)
+    .then(response => {
+      console.log("aaa");
+      console.log(response);
+      return response.text()
+    })
+    .then(body => { 
+      console.log(body)
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      $ = cheerio.load(body);
+      console.log($('.content_sortPagiBar' ).find('div').find('div').find('form').find('div').find('input').attr('type'));
+      console.log("aaaaaaaaa");
+    }).catch(err => {
+      console.error('Failed to fetch - ' + url);
+      console.error(err);
+    }))
  }
 
 const fetchAll1 = async (urls) => {
@@ -160,10 +177,12 @@ module.exports.scrape = async (url, brand)  => {
         console.log("___Response Ok___");
         const body = await response.text();
 
-        const urlFullCollecion = getURL(body);
-        console.log(urlFullCollecion)
-        const bodyList = await fetchAll1([urlFullCollecion]);
-        console.log(bodyList.length)
+        const urlCollection = await getURL(body);
+        console.log(urlCollection)
+        //const bodyCollection = await fetchAll1([urlFullCollecion]);
+        
+        
+
       }
 
 
