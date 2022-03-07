@@ -1,5 +1,6 @@
 /* eslint-disable no-console, no-process-exit */
 const dedicatedbrand = require('./sources/dedicatedbrand');
+const db = require('./db');
 
 async function sandbox(eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', shopname="dedicatedbrand") {
 //  if (shopname === "montlimart"){
@@ -9,7 +10,10 @@ async function sandbox(eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', 
 
       console.log(products);
       console.log('End');
-      process.exit(0);
+      const result = await db.insert(products);
+      console.log(`💽  ${result.insertedCount} inserted products`);
+      console.log('\n');
+
     } catch (e) {
       console.error(e);
       process.exit(1);

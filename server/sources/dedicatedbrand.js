@@ -208,7 +208,7 @@ module.exports.scrape = async (url, brand)  => {
         console.log("__________________________________________________________________________________")
       }
     }
-    return null;
+    return fullProducts;
   } catch (error) {
     console.error(error);
     return null;
