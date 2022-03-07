@@ -3,9 +3,11 @@ const dedicatedbrand = require('./sites/dedicatedbrand');
 const loom = require('./sites/loom');
 const db = require('./db');
 
-async function sandbox () {
+
+async function sandboxdb () {
   try {
     let products = [];
+    let dedicatedBrand = null
     let pages = [
       'https://www.dedicatedbrand.com/en/men/basics',
       'https://www.dedicatedbrand.com/en/men/sale'
@@ -18,9 +20,7 @@ async function sandbox () {
       console.log(`🕵️‍♀️  scraping ${page}`);
 
       let results = await dedicatedbrand.scrape(page);
-
       console.log(`👕 ${results.length} products found`);
-
       products.push(results);
     }
 
@@ -30,7 +30,6 @@ async function sandbox () {
     ];
 
     console.log('\n');
-
     console.log(`🕵️‍♀️  browsing ${pages.length} pages with Promise.all`);
 
     const promises = pages.map(page => loom.scrape(page));
@@ -38,36 +37,28 @@ async function sandbox () {
 
     console.log(`👕 ${results.length} results of promises found`);
     console.log(`👕 ${results.flat().length} products found`);
-
     console.log(results);
     console.log(results.flat());
+    console.log("\n");
 
     products.push(results.flat());
     products = products.flat();
-
-    console.log('\n');
-
     console.log(`👕 ${products.length} total of products found`);
-
-    console.log('\n');
-
+    
+    console.log("aaaaaaaaaaaaaaaaa")
     const result = await db.insert(products);
-
     console.log(`💽  ${result.insertedCount} inserted products`);
-
     console.log('\n');
 
     console.log('💽  Find Loom products only');
-
     const loomOnly = await db.find({'brand': 'loom'});
-
     console.log(`👕 ${loomOnly.length} total of products found for Loom`);
     console.log(loomOnly);
-
     db.close();
+    console.log("Closed")
   } catch (e) {
     console.error(e);
   }
 }
 
-sandbox();
+sandboxdb();
