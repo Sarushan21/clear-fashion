@@ -1,30 +1,6 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
-
-/**
- * Parse webpage e-shop
- * @param  {String} data - html response
- * @return {Array} products
- */
-const parse = data => {
-  const $ = cheerio.load(data);
-  return $('.productList-container .productList')
-    .map((i, element) => {
-      const name = $(element)
-        .find('.productList-title')
-        .text()
-        .trim()
-        .replace(/\s/g, ' ');
-      const price = parseInt(
-        $(element)
-          .find('.productList-price')
-          .text()
-      );
-
-      return {name, price};
-    })
-    .get();
-};
+const {'v5': uuidv5} = require('uuid');
 
 //////////////////////////////////////// DEDICATED SHOP SCRAPING ////////////////////////////////////////
 
@@ -37,8 +13,9 @@ const parseDedicated = data => {
   var fullProducts = [];
   data.products.forEach(product => {        
     if(product.id != undefined){
+      link='https://www.dedicatedbrand.com/en/'+product.canonicalUri;
       fullProducts.push({
-        "id": product.id,
+        '_id': uuidv5(link, uuidv5.URL),
         "name": product.name,
         "brand": "dedicated",
         "price": product.price.priceAsNumber,
@@ -68,7 +45,6 @@ const parseDedicated = data => {
     const categoryList = ["Pulls & Sweats","Chemises"];
     if (categoryList.includes($(value).text())){
       var link = $(value).attr('href') + limit;
-      console.log(link);
       urlList.push(link);
     }
   });
@@ -77,8 +53,8 @@ const parseDedicated = data => {
 
 const fetchAllMontlimart = async (urls) => {
   const resp = await Promise.all(urls.map(u => fetch(u)));
-  const texts = await Promise.all(resp.map(r => r.text()));
-  return (texts);
+  const bodies = await Promise.all(resp.map(r => r.text()));
+  return (bodies);
 }
 
 const parseMontlimart = data => {
@@ -87,19 +63,17 @@ const parseMontlimart = data => {
     .map((i, element) => {
       if (parseFloat($(element).find('.product-info .price-box .price').text().trim())){
         const name = $(element).find('.product-info .product-name').text().trim();
-        console.log(name);
         const price = parseFloat($(element).find('.product-info .price-box .price').text().trim().replace(/,/g,'.'));
-        console.log($(element).find('.product-info .price-box .price').text().trim())
-        console.log(price);
         const image = $(element).find('.product-image').find('a').find('img').attr('src');
-        console.log(i);
-        return {name, price, image};
+        const link = $(element).find('.product-info .product-name').find('a').attr('href');
+        return {'_id': uuidv5(link, uuidv5.URL), name, price, image, link};
       }
     })
     .get();
 };
 
 ///////////////////////////////////// ADRESSE PARIS SHOP SCRAPING ///////////////////////////////////////
+
 /**
  * Parse webpage e-shop
  * @param  {String} data - html response
@@ -109,22 +83,21 @@ const getURLAdresseParis = async (data) => {
   var $ = cheerio.load(data);
   var path = $('.container ').find('nav').find('ul').find('li').find('a');
   const url = path.attr('href');
-  console.log(url);
   
   return fetch(url)
     .then(response => { return response.text() })
     .then(body => { 
       var $ = cheerio.load(body);
-      var name = []
-      var val = []
+      var name = [];
+      var val = [];
       var path = $('.content_sortPagiBar').find('div').find('div').find('form').find('div').find('input').each( (index, value) => {
         name.push($(value).attr("name"));
         val.push($(value).attr("value"));
       })
-      const urlALL = url+ "?" + name[0] + "=" + val[0] + "&" + name[1] + "=" + val[1] 
+      const urlALL = url+ "?" + name[0] + "=" + val[0] + "&" + name[1] + "=" + val[1]; 
       return (urlALL)
     }).catch(err => {
-      console.error('Failed to fetch - ' + url);
+      console.error('Failed to fetch --- ' + url);
       console.error(err);
     })
 }
@@ -140,18 +113,19 @@ const parseAdresseParis = data => {
   return $('.product_list.grid.row').find('li')
     .map((i, element) => {
       if (parseFloat($(element).find('.product-container .right-block .prixright .content_price .price.product-price').text().trim())){
-        
         const name = $(element).find('.product-container .right-block .product-name-container.versionmob .product-name').text().trim();
-        console.log(name);
         const price = parseFloat($(element).find('.product-container .right-block .prixright .content_price .price.product-price').text().trim().replace(/,/g,'.'));
-        console.log(price);
         const image = $(element).find('.product-container .left-block .product-image-container').find('a').find('img').attr('src');
-        console.log(i);
-        return {name, price, image};
+        const link = $(element).find('.product-container .right-block .product-name-container.versionmob').find('a').attr('href');
+        return {'_id': uuidv5(link, uuidv5.URL), name, price, image, link};
       }
     })
     .get();
 };
+
+/*********************************************************************************************************/
+/*                                               WEB SCRAPING                                            */
+/*********************************************************************************************************/
 
 /**
  * Scrape all the products for a given url page
@@ -162,52 +136,65 @@ module.exports.scrape = async (url, brand)  => {
   try {
     const response = await fetch(url);
     if (response.ok) {
+      
       if (brand=="dedicatedbrand"){
-        console.log("___Response Ok___");
+        //Initialisation of web scraping
+        console.log("🟢|Response Ok!\n");
+        console.log("🔎|Start of Web Scraping...")
+
+        //Web Scraping
         const body = await response.json();
         var fullProducts =  parseDedicated(body);
-        console.log(fullProducts);
-        //var myJsonString = JSON.parse(JSON.stringify(fullProducts));
-        //console.log(myJsonString);
+        console.log("🚀|Web Scraping Completed!!!")
+        console.log(`🌟|List of all Products in ${brand}: `)
+        console.log(fullProducts)
         console.log("__________________________________________________________________________________")
-
       }
-      if (brand=="montlimart"){
-        console.log("___Response Ok___");
-        const body = await response.text();
 
+      if (brand=="montlimart"){
+        //Initialisation of web scraping
+        console.log("🟢|Response Ok!\n");
+        console.log("🔎|Start of Web Scraping...")
+
+        //Web Scraping
+        const body = await response.text();
         const urlList = getURLMontlimart(body);
         const bodyList = await fetchAllMontlimart(urlList);
 
         var fullProducts = [];
+        console.log(urlList)
         bodyList.forEach(body => {
           const categoryProducts = parseMontlimart(body);
           fullProducts = fullProducts.concat(categoryProducts);
-          console.log(fullProducts);
-          console.log(fullProducts.length);
         })
-        //var myJsonString = JSON.stringify(fullProducts);
-        //console.log(myJsonString);
+        console.log("🚀|Web Scraping Completed!!!")
+        console.log(`🌟|List of all Products in ${brand}: `)
+        console.log(fullProducts)  
+        console.log(`${fullProducts.length} Products in ${brand}`);
         console.log("__________________________________________________________________________________")
       }
 
       if (brand=="adresseParis"){
-        console.log("___Response Ok___");
-        const body = await response.text();
+        //Initialisation of web scraping
+        console.log("🟢|Response Ok!\n");
+        console.log("🔎|Start of Web Scraping...")
 
+        //Web Scraping
+        const body = await response.text();
         const urlALL= await getURLAdresseParis(body);
-        console.log(urlALL)
         const bodyALL = await fetchAllAdresseParis(urlALL);
 
         var fullProducts = [];
         fullProducts = parseAdresseParis(bodyALL);
+        console.log("🚀|Web Scraping Completed!!!")
+        console.log(`🌟|List of all Products in ${brand}: `)
         console.log(fullProducts);
         console.log(fullProducts.length);
-        //var myJsonString = JSON.stringify(fullProducts);
-        //console.log(myJsonString);
         console.log("__________________________________________________________________________________")
       }
     }
+    //var myJsonString = JSON.stringify(fullProducts);
+    //console.log(myJsonString);
     return fullProducts;
   } catch (error) {
     console.error(error);

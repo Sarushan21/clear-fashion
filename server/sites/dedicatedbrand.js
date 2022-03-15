@@ -14,7 +14,7 @@ const parse = data => {
       const link = `https://www.dedicatedbrand.com${$(element)
         .find('.productList-link')
         .attr('href')}`;
-
+      console.log(link)
       return {
         link,
         'brand': 'dedicated',

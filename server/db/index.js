@@ -3,7 +3,7 @@ const {MongoClient} = require('mongodb');
 const fs = require('fs');
 
 const MONGODB_DB_NAME = 'WepApp-MongoDB';
-const MONGODB_COLLECTION = 'products';
+const MONGODB_COLLECTION = 'dedicatedBrand';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 let client = null;
