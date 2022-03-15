@@ -2,8 +2,8 @@ require('dotenv').config({path:"server/.env"});
 const {MongoClient} = require('mongodb');
 const fs = require('fs');
 
-const MONGODB_DB_NAME = 'clearfashion';
-const MONGODB_COLLECTION = 'dedicated';
+const MONGODB_DB_NAME = 'WepApp-MongoDB';
+const MONGODB_COLLECTION = 'products';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 let client = null;
@@ -19,13 +19,11 @@ const getDB = module.exports.getDB = async () => {
       console.log('💽  Already Connected');
       return database;
     }
-
     client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
     database = client.db(MONGODB_DB_NAME);
-
     console.log('💽  Connected');
-
     return database;
+
   } catch (error) {
     console.error('🚨 MongoClient.connect...', error);
     return null;
@@ -63,10 +61,13 @@ module.exports.insert = async products => {
 module.exports.find = async query => {
   try {
     const db = await getDB();
+    console.log("test")
     const collection = db.collection(MONGODB_COLLECTION);
     const result = await collection.find(query).toArray();
-
+    
+    console.log(result)
     return result;
+
   } catch (error) {
     console.error('🚨 collection.find...', error);
     return null;

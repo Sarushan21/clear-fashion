@@ -45,7 +45,9 @@ async function sandboxdb () {
     products = products.flat();
     console.log(`👕 ${products.length} total of products found`);
     
-    console.log("aaaaaaaaaaaaaaaaa")
+
+
+
     const result = await db.insert(products);
     console.log(`💽  ${result.insertedCount} inserted products`);
     console.log('\n');
