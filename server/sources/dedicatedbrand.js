@@ -145,8 +145,8 @@ module.exports.scrape = async (url, brand)  => {
         //Web Scraping
         const body = await response.json();
         var fullProducts =  parseDedicated(body);
-        console.log("🚀|Web Scraping Completed!!!")
-        console.log(`🌟|List of all Products in ${brand}: `)
+        console.log("📘|Web Scraping Completed!!!")
+        console.log(`🧢|List of all Products in ${brand}: `)
         console.log(fullProducts)
         console.log("__________________________________________________________________________________")
       }
@@ -167,8 +167,8 @@ module.exports.scrape = async (url, brand)  => {
           const categoryProducts = parseMontlimart(body);
           fullProducts = fullProducts.concat(categoryProducts);
         })
-        console.log("🚀|Web Scraping Completed!!!")
-        console.log(`🌟|List of all Products in ${brand}: `)
+        console.log("📘|Web Scraping Completed!!!")
+        console.log(`🧢|List of all Products in ${brand}: `)
         console.log(fullProducts)  
         console.log(`${fullProducts.length} Products in ${brand}`);
         console.log("__________________________________________________________________________________")
@@ -186,8 +186,8 @@ module.exports.scrape = async (url, brand)  => {
 
         var fullProducts = [];
         fullProducts = parseAdresseParis(bodyALL);
-        console.log("🚀|Web Scraping Completed!!!")
-        console.log(`🌟|List of all Products in ${brand}: `)
+        console.log("📘|Web Scraping Completed!!!")
+        console.log(`🧢|List of all Products in ${brand}: `)
         console.log(fullProducts);
         console.log(fullProducts.length);
         console.log("__________________________________________________________________________________")

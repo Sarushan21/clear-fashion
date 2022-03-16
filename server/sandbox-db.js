@@ -2,7 +2,9 @@
 const dedicatedbrand = require('./sites/dedicatedbrand');
 const loom = require('./sites/loom');
 const db = require('./db');
+const sand = require("./sandbox")
 
+console.log(sand.sandbox())
 
 async function sandboxdb () {
   try {
@@ -48,14 +50,14 @@ async function sandboxdb () {
 
 
 
-    const result = await db.insert(products);
+     const result = await db.insert(products);
     console.log(`💽  ${result.insertedCount} inserted products`);
     console.log('\n');
 
-    console.log('💽  Find Loom products only');
+    /* console.log('💽  Find Loom products only');
     const loomOnly = await db.find({'brand': 'loom'});
     console.log(`👕 ${loomOnly.length} total of products found for Loom`);
-    console.log(loomOnly);
+    console.log(loomOnly); */
     db.close();
     console.log("Closed")
   } catch (e) {

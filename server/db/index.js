@@ -3,7 +3,7 @@ const {MongoClient} = require('mongodb');
 const fs = require('fs');
 
 const MONGODB_DB_NAME = 'WepApp-MongoDB';
-const MONGODB_COLLECTION = 'dedicatedBrand';
+const MONGODB_COLLECTION = 'products';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 let client = null;
@@ -45,11 +45,13 @@ module.exports.insert = async products => {
 
     return result;
   } catch (error) {
-    console.error('🚨 collection.insertMany...', error);
-    fs.writeFileSync('products.json', JSON.stringify(products));
+    console.error('🚨 collection.insertMany...');
+    console.error(error);
+    console.error(error.result.nInserted)
     return {
       'insertedCount': error.result.nInserted
     };
+    
   }
 };
 
