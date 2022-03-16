@@ -10,7 +10,7 @@ var client = null;
 var database = null;
 
 
-//------------------------------------------ MongoDB CONNECTION ----------------------------------------//
+//------------------------------------------ MongoDB CONNECTION -------------------------------------------//
 /**
  * MongoDB Database Connection
  * @type {MongoClient}
@@ -35,7 +35,7 @@ module.exports.mongoConnection = async () => {
     }
 };
 
-//------------------------------------------ MongoDB INSERTION -----------------------------------------//
+//------------------------------------------ MongoDB INSERTION --------------------------------------------//
 /**
  * MongoDB Database Insertion
  * @param  {Array}  products
@@ -49,9 +49,42 @@ module.exports.mongoConnection = async () => {
         return result;
 
     } catch (error) {
+        console.error(`🔴|Total Insertion: ${error.result.nInserted}...`);
+        console.error(error);
         console.error('❌|Insertion Failed...');
-        console.error(error)
-        console.error("__________________________________________________________________________________")
-        console.log(error.result.nInserted)
+        console.error("__________________________________________________________________________________");
+        return null;
     }
 };
+
+//------------------------------------------ MongoDB QUERY ------------------------------------------------//
+/**
+ * MongoDB Query
+ * @param {Array} query
+ * @return {Array}
+ */
+module.exports.mongoQuery = async query => {
+    try {
+        const db = await mongoConnection();
+        const collection = db.collection(MONGODB_COLLECTION);
+        const products = await collection.find(query).toArray();
+        console.log(products)
+        return products;
+  
+    } catch (error) {
+        console.error('🚨 collection.find...', error);
+        return null;
+    }
+};
+  
+/**
+ * Close the connection
+ */
+module.exports.close = async () => {
+    try {
+        await client.close();
+    } catch (error) {
+        console.error('🚨 MongoClient.close...', error);
+    }
+};
+  
