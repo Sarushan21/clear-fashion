@@ -3,7 +3,7 @@ const {MongoClient} = require('mongodb');
 
 //MongoDB Details
 const MONGODB_DB_NAME = 'WepApp-MongoDB';
-const MONGODB_COLLECTION = 'dedicatedBrand';
+const MONGODB_COLLECTION = 'test000&#';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 var client = null;
@@ -28,7 +28,7 @@ module.exports.mongoConnection = async () => {
         return database;
 
     } catch(error) {
-        console.error('❌|Connection Failed...');
+        console.error('❌|Error: MongoDB Connection Failed...');
         console.error(error);
         console.error("__________________________________________________________________________________")
         return null;
@@ -41,50 +41,61 @@ module.exports.mongoConnection = async () => {
  * @param  {Array}  products
  * @return {Object}
  */
- module.exports.mongoInsert = async products => {
+ module.exports.mongoInsert = async (products,db) => {
     try {
-        const db = await mongoConnection();
+        console.log("🧩|Start of Database Filling|🧩")
         const collection = db.collection(MONGODB_COLLECTION);
         const result = await collection.insertMany(products, {'ordered': true});
+        console.log("📗|Database Filling Completed!!!")
+        console.log(`---Total Insertion: ${result.insertedCount}---\n`)
         return result;
 
     } catch (error) {
-        console.error(`🔴|Total Insertion: ${error.result.nInserted}...`);
-        console.error(error);
-        console.error('❌|Insertion Failed...');
+        console.error('❌|Error: MongoDB Insertion Failed...');
+        console.error(`🔴|Total Insertion: ${error.result.nInserted}`);
         console.error("__________________________________________________________________________________");
+        console.error(error);
         return null;
     }
 };
 
-//------------------------------------------ MongoDB QUERY ------------------------------------------------//
+//--------------------------------------------- MongoDB QUERY ---------------------------------------------//
 /**
  * MongoDB Query
  * @param {Array} query
  * @return {Array}
  */
-module.exports.mongoQuery = async query => {
+module.exports.mongoQuery = async (query,db) => {
     try {
-        const db = await mongoConnection();
+        console.log("💲|Start Query|💲")
         const collection = db.collection(MONGODB_COLLECTION);
         const products = await collection.find(query).toArray();
+        console.log("👕|Query Completed!!!")
+        console.log("---Response of the Query:---")
         console.log(products)
-        return products;
-  
+        console.log("____________________________________________________________________________________");
+        return products;  
     } catch (error) {
-        console.error('🚨 collection.find...', error);
+        console.error('❌|Error: MongoDB Query Failed...');
+        console.error("__________________________________________________________________________________");
+        console.error(error);
         return null;
     }
 };
-  
+
+//--------------------------------------------- MongoDB Close ---------------------------------------------//
 /**
- * Close the connection
+ * MongoDB Close Connection
  */
-module.exports.close = async () => {
+module.exports.mongoClose = async () => {
     try {
         await client.close();
+        console.log("\n[End: MongoDB Closed]")
     } catch (error) {
-        console.error('🚨 MongoClient.close...', error);
+        console.error('❌|Error: MongoDB Closure Failed...');
+        console.error(`🔴|Total Insertion: ${error.result.nInserted}`);
+        console.error("__________________________________________________________________________________");
+        console.error(error);
     }
 };
   
