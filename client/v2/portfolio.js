@@ -323,7 +323,7 @@ console.log("Feature 11: Open product link");
 console.log("Feature 12: Save as favourite");
 
 document.addEventListener('DOMContentLoaded', async () => {
-const products = await fetchProducts();   
+const products = await fetchProducts();
 setCurrentProducts(products);
 render(currentProducts, currentPagination);
 });

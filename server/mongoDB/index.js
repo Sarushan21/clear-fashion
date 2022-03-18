@@ -3,7 +3,7 @@ const {MongoClient} = require('mongodb');
 
 //MongoDB Details
 const MONGODB_DB_NAME = 'WepApp-MongoDB';
-const MONGODB_COLLECTION = 'test000&#';
+const MONGODB_COLLECTION = 'test';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 var client = null;
@@ -47,7 +47,7 @@ module.exports.mongoConnection = async () => {
         const collection = db.collection(MONGODB_COLLECTION);
         const result = await collection.insertMany(products, {'ordered': true});
         console.log("📗|Database Filling Completed!!!")
-        console.log(`---Total Insertion: ${result.insertedCount}---\n`)
+        console.log(`---Total Insertion: ${result.insertedCount} ---\n`)
         return result;
 
     } catch (error) {
@@ -98,4 +98,3 @@ module.exports.mongoClose = async () => {
         console.error(error);
     }
 };
-  
