@@ -65,14 +65,21 @@ const fetchProducts = async (page = 1, size = 12) => {
 const renderProducts = products => {
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
+  div.classList.add('productList');
   const template = products
     .map(product => {
+      console.log(product)
       return `
       <div class="product" id=${product.uuid}>
-        <span>${product.brand}</span>
+        <div class="product-info">
+        <img src="https://adresse.paris/30329-home_default/belleville-laine-laminee.jpg" >
+        <h4>${product.brand}</h4>
         <a target="_blank" href="${product.link}">${product.name}</a>
-        <span>${product.price}</span>
+        <h4>${product.price}</h4>
+        </div>
+        <div class="product-favorite">
         <button onclick="addFavorite();"">Add Favorite</button>
+        </div>
       </div>`;
     })
     .join('');
@@ -87,6 +94,7 @@ const renderProducts = products => {
  * @param  {Object} pagination
  */
 const renderPagination = pagination => {
+  console.log(pagination);
   const {count, currentPage, pageCount, pageSize} = pagination;
   const options = Array.from(
     {'length': pageCount},

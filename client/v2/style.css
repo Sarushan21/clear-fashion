@@ -1,9 +1,9 @@
 *{
     margin:0;
     padding:0;
-    box-sizing:0;
-    
+    box-sizing:0;    
 }
+
 body{
     font-family: 'Poppins', sans-serif;
 }
@@ -15,7 +15,7 @@ p{
     color:grey
 }
 
-/* Navigation */
+/*//////////////////////// Navigation //////////////////////*/
 .container{
     max-width:1200px;
     margin:auto;
@@ -40,43 +40,100 @@ nav ul li{
     margin-right:25px;
 }
 
-/* Homepage Image */
-.row{
-    display:flex;
+/*/////////////////////////// Homepage //////////////////////*/
+.homepage_image{
     align-items:center;
-    flex-wrap:wrap;
-}
-.col{
-    flex-basis:auto;
 }
 .col img{
     width:1200px;
     height:500px;
     max-width:1200px;
+    max-height:500px;
     object-fit: cover;
     object-position: 0% 0%;
 }
 
-/* Category Images */
+/*/////////////////////////// Brands ///////////////////////*/
 .category{
     margin-top:30px 0;
-    
 }
 .small-container{
     max-width:1080px;
-    padding-left:25px;
-    padding-right:25px;
-    margin: auto;
+    padding-left:20px;
+    padding-right:20px;
+    margin:auto;
+}
+.row{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
 }
 .col-3{
     display:inline-block;   
-    flex-basis:25%;
-    min-width:250px;
-    margin-bottom:30px;
-    margin-right:20px;
+    flex-basis:30%;
+    padding:10px;
+    max-width:320px;
 }
 .col-3 img{
     width:100%;
-    margin:auto;
-    margin-left:48%;
+    margin-left:30px;
+    text-align: center;
 }
+
+/*////////////////////////// Products //////////////////////*/
+.title{
+    text-align:center;
+    margin: 0 auto 50px;
+    position:relative;
+    line-height:60px;
+    color:darkgrey;
+}
+.title::after{
+    content:"";
+    background:darkslategrey ;
+    width:80px;
+    height:5px;
+    border-radius:5px;
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.productList{
+    display:flex;
+    flex-wrap:wrap;
+    transition:transform 0.5s;
+    margin-left: 30px;
+}
+.product{  
+    display:inline-block;
+    flex-basis:25%;
+    padding:20px 20px;
+    max-width:200px;
+    margin-bottom:30px;
+    margin-right:20px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+}
+.product img{
+    width:100%
+}
+.product img:hover{
+    transform:translateY(-5px);
+}
+.product .product-info{
+    height:95%;
+}
+.product .product-favorite{
+    height:5%;
+    text-align: center;
+}
+.product .product-favorite button{
+    padding:5px 30px;
+    border-radius:30px;
+    background-color: black;
+    border-color: blanchedalmond;
+    color:bisque;
+}
+
+/*/////////////////////////// Filter ///////////////////////*/
