@@ -8,7 +8,7 @@ let currentPagination = {};
 // initiate selectors
 
 const selectShow = document.querySelector('#show-select');
-const selectPage = document.querySelector('#page-select');
+const selectPage = document.querySelector('#pagination #page-select');
 const sectionProducts = document.querySelector('#products');
 const selectBrand = document.querySelector('#brand-select');
 const selectSort = document.querySelector('#sort-select');
@@ -50,6 +50,7 @@ const fetchProducts = async (page = 1, size = 12) => {
       console.error(body);
       return {currentProducts, currentPagination};
     }
+    console.log(body.data)
     return body.data;
 
   } catch (error) {
@@ -63,12 +64,12 @@ const fetchProducts = async (page = 1, size = 12) => {
  * @param  {Array} products
  */
 const renderProducts = products => {
+  console.log(products)
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
   div.classList.add('productList');
   const template = products
     .map(product => {
-      console.log(product)
       return `
       <div class="product" id=${product.uuid}>
         <div class="product-info">
@@ -90,11 +91,10 @@ const renderProducts = products => {
 };
 
 /**
- * Render page selector
+ * Render page selectorc
  * @param  {Object} pagination
  */
 const renderPagination = pagination => {
-  console.log(pagination);
   const {count, currentPage, pageCount, pageSize} = pagination;
   const options = Array.from(
     {'length': pageCount},
@@ -179,7 +179,7 @@ const render = (products, pagination) => {
 
 console.log("Feature 0: Show more");
 selectShow.addEventListener('change', event => {
-  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+  fetchProducts(1, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });

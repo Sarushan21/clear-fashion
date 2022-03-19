@@ -43,10 +43,11 @@ nav ul li{
 /*/////////////////////////// Homepage //////////////////////*/
 .homepage_image{
     align-items:center;
+    margin-bottom:50px;
 }
-.col img{
-    width:1200px;
-    height:500px;
+.homepage_image img{
+    width:100%;
+    height:100%;
     max-width:1200px;
     max-height:500px;
     object-fit: cover;
@@ -55,7 +56,10 @@ nav ul li{
 
 /*/////////////////////////// Brands ///////////////////////*/
 .category{
-    margin-top:30px 0;
+    margin-top:20px;
+    margin-bottom:50px;
+    margin-left:20px;
+    
 }
 .small-container{
     max-width:1080px;
@@ -69,15 +73,45 @@ nav ul li{
     flex-wrap:wrap;
 }
 .col-3{
-    display:inline-block;   
+    display:inline-block;
     flex-basis:30%;
     padding:10px;
     max-width:320px;
 }
 .col-3 img{
     width:100%;
-    margin-left:30px;
+    margin-left:10px;
+    text-align:center;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+}
+
+/*/////////////////////////// About ////////////////////////*/
+.about .small-container{
+    background-color: black;
+    margin-bottom:80px;
+}
+.col-2{
+    display:block;
+    flex-basis:49%;
+    max-width:500px;
+}
+.col-2 .title{
+    margin-left:50px;
+    margin-top: -50px;
+    line-height:60px;
     text-align: center;
+    color:whitesmoke;
+}
+.col-2 p{
+    margin-left: 50px;
+    text-align: center;
+    color:grey;
+}
+.col-2 img{
+    width:60%;
+    padding:20px;
+    text-align:right;
+    margin-left: 100px;
 }
 
 /*////////////////////////// Products //////////////////////*/
@@ -137,3 +171,31 @@ nav ul li{
 }
 
 /*/////////////////////////// Filter ///////////////////////*/
+.filter{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;   
+    
+}
+#options{
+    display:inline-block;
+    align-items: center;
+    flex-basis:40%;
+    padding:20px 20px;
+    max-width:400px;
+}
+
+#options #show{
+    padding:5px 30px;
+    border-radius:30px;
+    background-color: black;
+    border-color: blanchedalmond;
+    color:bisque;
+}
+#indicators{
+    display:inline-block;
+    align-items: center;
+    flex-basis:60%;
+    padding:20px 20px;
+    max-width:600px;
+}
