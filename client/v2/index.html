@@ -73,6 +73,7 @@
     <div class="small-container">
       <h1 class="title">ClearFashion</h1>
       <section id="options">
+
         <div id="show">
           <label for="show-select">Show:</label>
           <select name="show" id="show-select">
@@ -81,23 +82,18 @@
             <option value="48">48</option>
           </select>
         </div>
-        
         <div id="filters">
           <div id="recent">
             <label for="recent-select">By recent released:</label>
-            <select name="recent" id="recent-select"> 
-              <option value="lessOneWeek">Less than One Week</option>
-              <option value="lessTwoWeeks">less than Two Weeks</option>
-              <option value="lessThreeWeeks">less than Three Weeks</option>
-            </select>
+            <input type="checkbox" id="recent-checkbox" name="recentProducts" value="recentCheckbox" >
           </div>
           <div id="reasonable">
-            <label for="reasonble-select">By reasonable price:</label>
-            <select name="reasonable" id="reasonable-select">
-              <option value="less25EUROS">Less than 25€</option>
-              <option value="less50EUROS">less than 50€</option>
-              <option value="less80EUROS">less than 80€</option>
-            </select>
+            <label for="reasonable-select">By reasonable released:</label>
+            <input type="checkbox" id="reasonable-checkbox" name="reasonableProducts" value="reasonableCheckbox">
+          </div>
+          <div id="favorite">
+            <label for="reasonable-select">Your Favorite Products:</label>
+            <input type="checkbox" id="favorite-checkbox" name="favoriteProducts" value="favoriteCheckbox">
           </div>
           <div id="brand">
             <label for="brand-select">By brands:</label>
@@ -107,6 +103,7 @@
         <div id="sort">
           <label for="sort-select">Sort:</label>
           <select name="sort" id="sort-select">
+            <option value="default">Sort by Default</option>
             <option value="price-asc">Cheaper</option>
             <option value="price-desc">Expensive</option>
             <option value="date-asc">Recently released</option>
@@ -114,6 +111,8 @@
           </select>
         </div>
       </section>
+
+
       <section id="indicators">
         <h2>Indicators</h2>
         <div>

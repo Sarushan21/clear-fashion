@@ -2,9 +2,9 @@
 const dedicatedbrand = require('./sites/dedicatedbrand');
 const loom = require('./sites/loom');
 const db = require('./mongoDB');
-//const sand = require("./sandbox")
+const sand = require("./sandbox")
 
-//console.log(sand.sandbox())
+var montlimart = sand.sandbox(eshop="https://www.montlimart.com/",shopname="montlimart")
 
 async function sandboxdb () {
   try {
@@ -15,7 +15,7 @@ async function sandboxdb () {
       'https://www.dedicatedbrand.com/en/men/sale'
     ];
 
-    //console.log(`🕵️‍♀️  browsing ${pages.length} pages with for...of`);
+    console.log(`🕵️‍♀️  browsing ${pages.length} pages with for...of`);
 
     // Way 1 with for of: we scrape page by page
     for (let page of pages) {
@@ -51,13 +51,13 @@ async function sandboxdb () {
 
     const database = await db.mongoConnection();
     const result = await db.mongoInsert(products,database);
-    
-    console.log('Find Loom products only');
-    const loomOnly = await db.mongoQuery({'brand': 'loom'},database);
+    const result1=await db.mongoInsert(montlimart,database)
+    //console.log('Find Loom products only');
+    //const loomOnly = await db.mongoQuery({'brand': 'loom'},database);
     //console.log(`👕 ${loomOnly.length} total of products found for Loom`);
     //console.log(loomOnly);
     await db.mongoClose();
-    //console.log("Closed")
+    console.log("Closed")
   } catch (e) {
     console.error(e);
   }

@@ -1,7 +1,8 @@
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-const db = require('./db');
+const db = require('./mongoDB');
+require('dotenv').config({path:"server/.env"});
 
 const PORT = 8092;
 const app = express();
@@ -12,30 +13,60 @@ app.use(cors());
 app.use(helmet());
 app.options('*', cors());
 
+
+
+var client = null;
+var database = null;
+
+const {MongoClient} = require('mongodb');
+const MONGODB_DB_NAME = 'WepApp-MongoDB';
+const MONGODB_COLLECTION = 'test';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+
+//app.get('/products', (request, response) => {
+//  client.connect( async (err) => {
+//    var id =request.params.id;
+//    console.log("connected")
+//    const test = await collection.find({}).toArray();
+//    //console.log(test);
+//    response.send(test);
+//    
+//  });
+// 
+//});
+
+
+
+/////////////////////////////////////////
+
+
+
 app.get('/', (request, response) => {
   response.send({'ack': true, "test":false});
 });
 
 app.get('/products', async (request, response) => {
-  const products = await db.find({});
-  console.log(products)
-  response.send("Hi")
-});
-
-app.get('/products2', async (request, response) => {
-  const products = await db.find({});
+  //const database = await db.mongoConnection();
+  client = await MongoClient.connect(MONGODB_URI, { useUnifiedTopology: true,useNewUrlParser: true});
+  database = client.db(MONGODB_DB_NAME);
+  const products = await db.mongoQuery({},database);
   console.log(products)
   response.send(products)
 });
 
+
 app.get('/products/search', async (request, response) => {
   console.log(request)
-  const products = await db.find({});
+  response.sendStatus("hi")
+  const products = await db.mongoQuery({});
   response.send(products)
 });
 
 app.get('/products/:id', async (request, response) => {
-  const product = await db.find({'_id':request.params.id});
+  client = await MongoClient.connect(MONGODB_URI, { useUnifiedTopology: true,useNewUrlParser: true});
+  database = client.db(MONGODB_DB_NAME);
+  const product = await db.mongoQuery({'_id':request.params.id},database);
   response.send(product)
 });
 

@@ -158,11 +158,11 @@ nav ul li{
 .product .product-info{
     height:95%;
 }
-.product .product-favorite{
+.product .favorite{
     height:5%;
     text-align: center;
 }
-.product .product-favorite button{
+.product .favorite input{
     padding:5px 30px;
     border-radius:30px;
     background-color: black;

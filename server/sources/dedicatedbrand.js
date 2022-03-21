@@ -42,7 +42,7 @@ const parseDedicated = data => {
   var limit = "?limit=all";
   var urlCategory =  $('.skip-content .nav-primary').find('li').find('a').each( (index, value) => {
     //const categoryList = ["Chaussures", "Pulls & Sweats", "Chemises", "Polos & T-shirts", "Accessoires", "Bas"];
-    const categoryList = ["Pulls & Sweats","Chemises"];
+    const categoryList = ["Pulls & Sweats"];
     if (categoryList.includes($(value).text())){
       var link = $(value).attr('href') + limit;
       urlList.push(link);
@@ -197,6 +197,8 @@ module.exports.scrape = async (url, brand)  => {
     //console.log(myJsonString);
     return fullProducts;
   } catch (error) {
+    console.error("❌|Error: Web Scraping Failed...");
+    console.error("__________________________________________________________________________________");
     console.error(error);
     return null;
   }
