@@ -22,7 +22,7 @@ module.exports.mongoConnection = async () => {
             return database; }
 
         console.log(`🍃|Connection... ${MONGODB_DB_NAME}|🍃`);
-        client = await MongoClient.connect(MONGODB_URI, { useUnifiedTopology: true,useNewUrlParser: true});
+        client = await MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true,});
         database = client.db(MONGODB_DB_NAME);
         console.log("🟢|Connection Success!!!\n");
         return database;

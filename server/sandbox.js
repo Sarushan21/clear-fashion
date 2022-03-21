@@ -2,7 +2,7 @@ const dedicatedbrand = require('./sources/dedicatedbrand');
 const db = require('./db');
 
 
-/*module.exports.sandbox = async (eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', shopname="dedicatedbrand") => {
+module.exports.sandbox = async (eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', shopname="dedicatedbrand") => {
     try {
       console.log(`🌐|Browsing... ${eshop}|🌐`);
       const fullProducts = await dedicatedbrand.scrape(eshop,shopname);
@@ -15,9 +15,9 @@ const db = require('./db');
       console.error(e);
       process.exit(1);
     }
-}*/
+}
 
-
+/*
 async function sandbox(eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', shopname="dedicatedbrand") {
     try {
       console.log(`🌐|Browsing... ${eshop}|🌐`);
@@ -30,7 +30,7 @@ async function sandbox(eshop = 'https://www.dedicatedbrand.com/en/loadfilter?', 
       console.error(e);
       process.exit(1);
     }
-}
+}*/
 
-const [,, eshop,shopname] = process.argv;
-sandbox(eshop,shopname);
+//const [,, eshop,shopname] = process.argv;
+//sandbox(eshop,shopname);

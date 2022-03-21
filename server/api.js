@@ -2,7 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const db = require('./mongoDB');
-require('dotenv').config({path:"server/.env"});
+require('dotenv').config();
 
 const PORT = 8092;
 const app = express();
@@ -48,8 +48,11 @@ app.get('/', (request, response) => {
 
 app.get('/products', async (request, response) => {
   //const database = await db.mongoConnection();
-  client = await MongoClient.connect(MONGODB_URI, { useUnifiedTopology: true,useNewUrlParser: true});
+  console.log("hi")
+  client = await MongoClient.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+  console.log("connection en cours...")
   database = client.db(MONGODB_DB_NAME);
+  console.log(database)
   const products = await db.mongoQuery({},database);
   console.log(products)
   response.send(products)
