@@ -1,1 +1,5 @@
-{}
+{
+  "dependencies": {
+    "paginate-info": "^1.0.4"
+  }
+}

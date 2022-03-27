@@ -1,5 +1,4 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
-'use strict';
 
 // current products on the page
 let currentProducts = [];
@@ -23,12 +22,12 @@ const spanP95 = document.querySelector('#p95');
 const spanLastReleased = document.querySelector('#lastReleased');
 
 var favoriteList = []
-console.log(localStorage)
+//console.log(localStorage)
 //localStorage.removeItem("User_Favorite_Brand")
 if (localStorage.getItem('User_Favorite_Brand') !== null){
   favoriteList = favoriteList.concat(JSON.parse(localStorage.getItem('User_Favorite_Brand')))
 }
-console.log(favoriteList)
+//console.log(favoriteList)
 
 /**
  * Set global value
@@ -46,19 +45,22 @@ const setCurrentProducts = ({result, meta}) => {
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12) => {
+const fetchProducts = async (page = 1, size = 32) => {
   try {
     const response = await fetch(
-      //`https://server-roan-eta.vercel.app/products`
-      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
+      `https://server-roan-eta.vercel.app/products/find?currentPage=${page}&pageLimit=${size}`
+      //`https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
+
     );
+    console.log(response)
     const body = await response.json();
     console.log(body)
-
-    if (body.success !== true) {
+    console.log(body.sucess)
+    if (body.sucess !== true) {
       console.error(body);
       return {currentProducts, currentPagination};
     }
+    console.log("###################")
     console.log(body.data)
     return body.data;
 
@@ -86,7 +88,7 @@ const renderProducts = products => {
       return `
       <div class="product" id=${product.uuid}>
         <div class="product-info">
-        <img src="https://adresse.paris/30329-home_default/belleville-laine-laminee.jpg" >
+        <img src=${product.image} >
         <h4>${product.brand}</h4>
         <a target="_blank" href="${product.link}">${product.name}</a>
         <h4>${product.price}</h4>

@@ -24,44 +24,55 @@ const MONGODB_COLLECTION = 'test';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 
-//app.get('/products', (request, response) => {
-//  client.connect( async (err) => {
-//    var id =request.params.id;
-//    console.log("connected")
-//    const test = await collection.find({}).toArray();
-//    //console.log(test);
-//    response.send(test);
-//    
-//  });
-// 
-//});
-
-
-
 /////////////////////////////////////////
-
-
-
 app.get('/', (request, response) => {
   response.send({'ack': true, "test":false});
 });
 
 app.get('/products', async (request, response) => {
-  //const database = await db.mongoConnection();
-  console.log("hi")
+  //client.connect( async (err) => {
+  //  var id =request.params.id;
+  //  console.log("connected")
+  //  const test = await collection.find({}).toArray();
+    //console.log(test);
+  //  response.send(test);
+  //});
   client = await MongoClient.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-  console.log("connection en cours...")
   database = client.db(MONGODB_DB_NAME);
-  console.log(database)
   const products = await db.mongoQuery({},database);
   console.log(products)
   response.send(products)
 });
 
+app.get('/products/find', async (request, response) => {
+  //const database = await db.mongoConnection();
+  client = await MongoClient.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+  database = client.db(MONGODB_DB_NAME);
+  const collection = database.collection(MONGODB_COLLECTION);
+  
+  const { calculateLimitAndOffset, paginate } = require('paginate-info');
+  var currentPage = parseInt(request.query.currentPage);
+  var pageLimit = parseInt(request.query.pageLimit);
+  console.log(request.query);
+  console.log(currentPage);
+  console.log(pageLimit);
+
+  const {limit, offset} = calculateLimitAndOffset(currentPage, pageLimit);
+  const count = await collection.count({});
+  const rows = await collection.find({}).skip(offset).limit(limit).toArray();
+
+  console.log(count)
+  console.log(rows)
+  var meta = paginate(currentPage, count, rows, pageLimit )
+  console.log(meta)
+
+  const result={"sucess":true, "data":{"result":rows,"meta":meta}}
+  response.send(result)
+});
+
 
 app.get('/products/search', async (request, response) => {
   console.log(request)
-  response.sendStatus("hi")
   const products = await db.mongoQuery({});
   response.send(products)
 });

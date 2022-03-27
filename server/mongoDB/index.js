@@ -82,6 +82,23 @@ module.exports.mongoQuery = async (query,db) => {
         return null;
     }
 };
+module.exports.mongoQueryCount = async (query,db) => {
+    try {
+        console.log("💲|Start Query|💲")
+        const collection = db.collection(MONGODB_COLLECTION);
+        const products = await collection.count(query);
+        console.log("👕|Query Completed!!!")
+        console.log("---Response of the Query:---")
+        console.log(products)
+        console.log("____________________________________________________________________________________");
+        return products;  
+    } catch (error) {
+        console.error('❌|Error: MongoDB Query Failed...');
+        console.error("__________________________________________________________________________________");
+        console.error(error);
+        return null;
+    }
+};
 
 //--------------------------------------------- MongoDB Close ---------------------------------------------//
 /**
