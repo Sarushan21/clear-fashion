@@ -11,7 +11,6 @@ async function sandboxMongoDB(){
         {"eshop":"https://adresse.paris/", "shopname":"adresseParis"}];
     */
 
-    console.log(dedicatedBrandProducts)
     const database = await db.mongoConnection();
     const insertDedicated = await db.mongoInsert(dedicatedBrandProducts, database);
     const insertMonlimart = await db.mongoInsert(montlimartProducts, database);

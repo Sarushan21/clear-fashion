@@ -52,15 +52,11 @@ const fetchProducts = async (page = 1, size = 32) => {
       //`https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
 
     );
-    console.log(response)
     const body = await response.json();
-    console.log(body)
-    console.log(body.sucess)
     if (body.sucess !== true) {
       console.error(body);
       return {currentProducts, currentPagination};
     }
-    console.log("###################")
     console.log(body.data)
     return body.data;
 
@@ -86,9 +82,9 @@ const renderProducts = products => {
         var checkbox = favoriteList.includes(jsonStringifyProduct);
       }
       return `
-      <div class="product" id=${product.uuid}>
+      <div class="product" id=${product._id}>
         <div class="product-info">
-        <img src=${product.image} >
+        <img src="${product.image}" >
         <h4>${product.brand}</h4>
         <a target="_blank" href="${product.link}">${product.name}</a>
         <h4>${product.price}</h4>
